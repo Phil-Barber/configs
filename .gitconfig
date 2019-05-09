@@ -1,0 +1,31 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+	name = Phil Barber
+	email = phil@lantum.com
+[core]
+    excludesfile = ~/.gitignore
+    hooksPath = /Users/philbarber/.git/hooks/
+    pager = diff-so-fancy | less --tabs=4 -RFX
+[alias]
+    co = checkout
+    last = log -1 HEAD
+    lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(dim white)%s%C(reset) %C(dim white)- %an%C(reset)'
+    m = checkout master
+    d = diff
+    s = status
+[color]
+    ui = true
+
+[diff-so-fancy]
+    changeHunkIndicators = true
+    stripLeadingSymbols = true
+[branch]
+    autoSetupMerge = always
+[push]
+    default = matching
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
