@@ -9,7 +9,6 @@ parse_git_branch() {
 
 export PATH=/usr/local/Cellar:$PATH
 
-export SENTRY_API_KEY='d6da8bb7a7c94fa69e92a6155c255f43bd8ae4ab292d4d65a3cfc731b3656d32'
 
 export GREP_OPTIONS='--color=auto --exclude=*.pyc --exclude-dir=.git'
 
@@ -25,9 +24,6 @@ alias sentry-cli='sentry-cli --api-key $SENTRY_API_KEY'
 
 # kubernetes aliases
 source ~/.bash_kube
-
-export AWS_ACCESS_KEY_ID=AKIAJWNFM5HED6DLVMMQ
-export AWS_SECRET_ACCESS_KEY=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
 
 
 function parent {
