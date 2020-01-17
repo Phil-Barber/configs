@@ -8,11 +8,25 @@ export NAME=k.lantum.com
 
 export KUBE_EDITOR='vim'
 
-__kube_ps1() {
- CONTEXT=$(cat ~/.kube/config | grep 'namespace:' | cut -d':' -f2 | tr -d '[:space:]')
- echo "[$CONTEXT]"
+use_uk_cluster() {
+    k config use-context k.lantum.com
 }
-# export PS1="\$(__kube_ps1) ${PS1}"
+
+use_us_staging() {
+    k config use-context us-1-2.staging.lantum.com
+}
+
+use_us_prod() {
+    k config use-context us-1-2.lantum.com
+}
+
+get_context() {
+    kubectl config current-context
+}
+
+get_namespace() {
+ kubectl config view --minify --output 'jsonpath={..namespace}'
+}
 
 function logs {
     service=$1
@@ -31,15 +45,16 @@ function describe {
     k describe pod "$service"
 }
 function namespace {
-    echo "Setting namespace $1"
+    export DEPLOY_TO=$1
     kubectl config set-context $(kubectl config current-context) --namespace=$1
 }
-build-docker-hub () {
+function build_docker_hub () {
   project=$1;
+  suffix=$2;
   cd $project;
-  version=`git log -1 --pretty=oneline | cut -d' ' -f1`;
-  docker build -t networklocum/$project:$version .;
-  docker push networklocum/$project:$version;
+  tag=networklocum/$project:phil-barber-$suffix
+  docker build -t $tag .;
+  docker push $tag
   cd ..;
 }
 function kwatch {

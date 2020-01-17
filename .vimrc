@@ -9,7 +9,13 @@
 set undodir=~/.vim/undodir
 set undofile
 
-:set colorcolumn=100
+:set shellcmdflag=-ic
+
+" fold it but unfold it please
+set foldmethod=indent
+set foldlevelstart=5
+
+:set colorcolumn=80
 highlight ColorColumn ctermbg=7
 
 set updatetime=100
@@ -29,7 +35,10 @@ set wildmode=longest,list
 map ,e :e <C-R>=expand("%:p:h") . "/" <CR>
 map ,t :tabe <C-R>=expand("%:p:h") . "/" <CR>
 map ,s :split <C-R>=expand("%:p:h") . "/" <CR>
-map ,v :split <C-R>=expand("%:p:h") . "/" <CR>
+map ,v :vsplit <C-R>=expand("%:p:h") . "/" <CR>
+
+" Search for visually selected text
+vnoremap // y/<C-R>"<CR>
 
 execute pathogen#infect()
 filetype plugin indent on
@@ -47,13 +56,8 @@ function TrimWhiteSpace()
 endfunction
 
 set list listchars=trail:.,extends:>
-autocmd FileWritePre * call TrimWhiteSpace()
-autocmd FileAppendPre * call TrimWhiteSpace()
-autocmd FilterWritePre * call TrimWhiteSpace()
-autocmd BufWritePre * call TrimWhiteSpace()
 
 map <F2> :call TrimWhiteSpace()<CR>
-map! <F2> :call TrimWhiteSpace()<CR>
 
 " tree
 autocmd StdinReadPre * let s:std_in=1
@@ -67,19 +71,38 @@ autocmd FileType nerdtree setlocal relativenumber
 :set wildignore+=*.swp,
 :set wildignore+=node_modules/**,
 
-
-" js syntax
-autocmd BufReadPre *.js let b:javascript_lib_use_angularjs = 1
-autocmd BufReadPre *.js let b:javascript_lib_use_angularui = 1
-autocmd BufReadPre *.js let b:javascript_lib_use_react = 1
-autocmd BufReadPre *.js let b:javascript_lib_use_jquery = 1
-autocmd BufReadPre *.js let b:javascript_lib_use_underscore = 1
-autocmd BufReadPre *.js let b:javascript_lib_use_backbone = 0
-
-" python syntax
-let g:python_highlight_all = 1
-
 call plug#begin()
 Plug 'janko-m/vim-test'
+Plug 'junegunn/rainbow_parentheses.vim'
 call plug#end()
+
+
+augroup FiletypeGroup
+    autocmd!
+    au BufNewFile,BufRead *.styled.js set filetype=javascript
+augroup END
+
+set nocscopetag
+let g:ctags_statusline=1
+let g:ale_fix_on_save = 1
+set noignorecase
+highlight ALEWarning ctermbg=LightBlue
+highlight ALEError ctermbg=LightBlue
+
+" these "Ctrl mappings" work well when Caps Lock is mapped to Ctrl
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-s> :TestSuite<CR>
+nmap <silent> t<C-l> :TestLast<CR>
+nmap <silent> t<C-g> :TestVisit<CR>
+
+" Quickfix mappings
+nmap <silent> <C-l> :cn<CR>
+nmap <silent> <C-p> :cp<CR>
+
+
+" flow
+let g:flow#enable = 0
+let g:flow#autoclose = 1
+
 
